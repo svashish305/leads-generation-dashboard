@@ -9,6 +9,7 @@ const LeadPage = () => {
 
   const logOut = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('userId');
     navigate('/');
   };
 
@@ -27,12 +28,15 @@ const LeadPage = () => {
           );
           const { success, user = null } = data;
           if (!success || user.userId !== parseInt(userId, 10)) {
+            localStorage.removeItem('token');
+            localStorage.removeItem('userId');
             navigate('/');
           }
         }
       } catch (error) {
         console.error(error);
         localStorage.removeItem('token');
+        localStorage.removeItem('userId');
         navigate('/');
       }
 

@@ -36,6 +36,7 @@ const LoginPage = () => {
       const { success, message, token, userId } = data;
       if (success) {
         localStorage.setItem('token', token);
+        localStorage.setItem('userId', userId);
         navigate(`/leads/${userId}`);
       } else {
         handleError(message);
