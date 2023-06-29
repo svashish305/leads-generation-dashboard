@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import LeadPage from './pages/LeadPage';
@@ -9,7 +9,6 @@ function App() {
       <Routes>
         <Route path='/login' element={<LoginPage />} />
         <Route path='/signup' element={<SignupPage />} />
-        <Route path='/' element={<Navigate to='/login' />} />
         <Route path='/leads/:userId' element={<LeadPage />} />
       </Routes>
     </BrowserRouter>
