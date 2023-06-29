@@ -8,7 +8,7 @@ export const signupController = async (req, res) => {
       return res.status(code).json({ message });
     }
     res.cookie("token", token, {
-      withCredentials: true,
+      // withCredentials: true,
       domain: process.env.COOKIE_DOMAIN,
       path: "/",
       sameSite: "None",
@@ -40,7 +40,7 @@ export const loginController = async (req, res) => {
       return res.status(code).json({ message });
     }
     res.cookie("token", token, {
-      withCredentials: true,
+      // withCredentials: true,
       domain: process.env.COOKIE_DOMAIN,
       path: "/",
       sameSite: "None",
