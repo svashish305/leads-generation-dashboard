@@ -10,6 +10,7 @@ export const signupController = async (req, res) => {
     res.cookie("token", token, {
       withCredentials: true,
       httpOnly: false,
+      sameSite: "none",
     });
     const userResponse = {
       userId: user.userId,
@@ -36,6 +37,7 @@ export const loginController = async (req, res) => {
     res.cookie("token", token, {
       withCredentials: true,
       httpOnly: false,
+      sameSite: "none",
     });
     return res
       .status(200)
