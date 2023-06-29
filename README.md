@@ -4,7 +4,7 @@ This MERN stack app demonstrates a webhook endpoint on server that receives lead
 
 Backend is deployed on Render [here](https://lead-generation.onrender.com).
 
-Frontend is deployed on Netlify [here](https://extraordinary-toffee-2d4a71.netlify.app/).
+Frontend is deployed on Netlify [here](https://leads-generation-dashboard-bl9a8cg8s-svashish305.vercel.app/).
 
 ## Curl command to submit lead to webhook endpoint
 
