@@ -11,13 +11,13 @@ const LeadPage = () => {
 
   const logOut = () => {
     removeCookie('token');
-    navigate('/login');
+    navigate('/');
   };
 
   useEffect(() => {
     const fetchData = async () => {
       if (!cookies.token) {
-        navigate('/login');
+        navigate('/');
       } else {
         try {
           const { data } = await axios.get(
@@ -27,12 +27,12 @@ const LeadPage = () => {
           const { success } = data;
           if (!success) {
             removeCookie('token');
-            navigate('/login');
+            navigate('/');
           }
         } catch (error) {
           console.error(error);
           removeCookie('token');
-          navigate('/login');
+          navigate('/');
         }
       }
 
