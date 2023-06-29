@@ -6,7 +6,7 @@ import axios from 'axios';
 const LeadPage = () => {
   const { userId } = useParams();
   const navigate = useNavigate();
-  const [cookies, removeCookie] = useCookies([]);
+  const [cookies, removeCookie] = useCookies(['token']);
   const [leads, setLeads] = useState([]);
 
   const logOut = () => {
