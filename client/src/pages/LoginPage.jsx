@@ -35,8 +35,9 @@ const LoginPage = () => {
         { withCredentials: true }
       );
       const { success, message, userId } = data;
+      console.log('>>>data ', data);
       if (success) {
-        console.log('>>> loggedin, navigating to dashboard');
+        console.log('>>> loggedin, navigating to dashboard', userId);
         navigate(`/leads/${userId}`);
       } else {
         handleError(message);
@@ -59,6 +60,7 @@ const LoginPage = () => {
           <label htmlFor='email'>Email</label>
           <input
             type='email'
+            id='email'
             name='email'
             value={email}
             placeholder='Enter your email'
@@ -69,6 +71,7 @@ const LoginPage = () => {
           <label htmlFor='password'>Password</label>
           <input
             type='password'
+            id='password'
             name='password'
             value={password}
             placeholder='Enter your password'

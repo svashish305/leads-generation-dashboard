@@ -58,6 +58,7 @@ const SignupPage = () => {
           <label htmlFor='email'>Email</label>
           <input
             type='email'
+            id='email'
             name='email'
             value={email}
             placeholder='Enter your email'
@@ -68,6 +69,7 @@ const SignupPage = () => {
           <label htmlFor='password'>Password</label>
           <input
             type='password'
+            id='password'
             name='password'
             value={password}
             placeholder='Enter your password'
