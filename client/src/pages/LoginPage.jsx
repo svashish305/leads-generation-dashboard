@@ -6,8 +6,8 @@ import axios from 'axios';
 const LoginPage = () => {
   const navigate = useNavigate();
 	const [form, setForm] = useState({
-    email: "",
-    password: "",
+    email: '',
+    password: '',
   });
   const { email, password } = form;
 
@@ -21,12 +21,12 @@ const LoginPage = () => {
 
 	const handleError = (err) =>
     toast.error(err, {
-      position: "bottom-left",
+      position: 'bottom-left',
     });
 	
   const handleSuccess = (msg) =>
     toast.success(msg, {
-      position: "bottom-right",
+      position: 'bottom-right',
     });
 
 	const handleSubmit = async (e) => {
@@ -51,38 +51,38 @@ const LoginPage = () => {
     }
     setForm({
       ...form,
-      email: "",
-      password: "",
+      email: '',
+      password: '',
     });
   };
 
 	return (
-		<div className="form_container">
+		<div className='form_container'>
       <h2>Login Account</h2>
       <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="email">Email</label>
+          <label htmlFor='email'>Email</label>
           <input
-            type="email"
-            name="email"
+            type='email'
+            name='email'
             value={email}
-            placeholder="Enter your email"
+            placeholder='Enter your email'
             onChange={handleOnChange}
           />
         </div>
         <div>
-          <label htmlFor="password">Password</label>
+          <label htmlFor='password'>Password</label>
           <input
-            type="password"
-            name="password"
+            type='password'
+            name='password'
             value={password}
-            placeholder="Enter your password"
+            placeholder='Enter your password'
             onChange={handleOnChange}
           />
         </div>
-        <button type="submit">Submit</button>
+        <button type='submit'>Login</button>
         <span>
-          Already have an account? <Link to={"/signup"}>Signup</Link>
+          Already have an account? <Link to={'/signup'}>Signup</Link>
         </span>
       </form>
       <ToastContainer />

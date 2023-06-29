@@ -16,7 +16,7 @@ export const validateUser = async (req, res, next) => {
     if (userId && user.userId !== parseInt(userId, 10)) {
       return res.status(403).json({ message: "Unauthorized access" });
     }
-    const { password, ...others } = user.toObject();
+    const { __v, password, ...others } = user.toObject();
     req.user = others;
     next();
   } catch (error) {

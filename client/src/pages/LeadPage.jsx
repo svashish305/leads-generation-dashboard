@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
-import { toast, ToastContainer } from 'react-toastify';
 import axios from 'axios';
 
 const LeadPage = () => {
@@ -13,46 +12,56 @@ const LeadPage = () => {
   useEffect(() => {
     const verifyCookie = async () => {
       if (!cookies.token) {
-        navigate("/login");
+        navigate('/login');
       }
       const { data } = await axios.get(
         `${import.meta.env.VITE_APP_API_URL}/api/v1/auth/user`,
         { withCredentials: true }
       );
-      const { success, user = null } = data;
-      return success
-        ? toast(`Hello ${user}`, {
-            position: "top-right",
-          })
-        : (removeCookie("token"), navigate("/login"));
+      const { success } = data;
+      if (!success) {
+        removeCookie('token');
+        navigate('/login');
+      }
     };
     verifyCookie();
   }, [cookies, navigate, removeCookie]);
 
   const logOut = () => {
-    removeCookie("token");
-    navigate("/signup");
+    removeCookie('token');
+    navigate('/login');
   };
 
-  // useEffect(() => {
-  //   const eventSource = new EventSource(`${import.meta.env.VITE_APP_API_URL}/api/v1/sse`);
+  useEffect(() => {
+    const fetchLeads = async () => {
+      const { data } = await axios.get(`${import.meta.env.VITE_APP_API_URL}/api/v1/lead`, { withCredentials: true });
+      const { success, leads = [] } = data;
+      if (success) {
+        setLeads(leads);
+      }
+    };
+    fetchLeads();
+  }, []);
 
-  //   eventSource.onmessage = (event) => {
-  //     const leadData = JSON.parse(event.data);
-  //     if (leadData.userId === userId) {
-  //       setLeads((prevLeads) => [...prevLeads, leadData]);
-  //     }
-  //   };
+  useEffect(() => {
+    const eventSource = new EventSource(`${import.meta.env.VITE_APP_API_URL}/api/v1/sse`);
 
-  //   return () => eventSource.close();
-  // }, [userId]);
+    eventSource.onmessage = (event) => {
+      const leadData = JSON.parse(event.data);
+      if (leadData.userId === parseInt(userId, 10)) {
+        setLeads((prevLeads) => [...prevLeads, leadData]);
+      }
+    };
+
+    return () => eventSource.close();
+  }, [userId]);
 	
 	return (
 		<>
       <h3>Your Webhook URL</h3>
       {import.meta.env.VITE_APP_API_URL}/api/v1/webhook/{userId}
       <button onClick={logOut}>Log Out</button>
-      {/* {leads.length > 0 && 
+      {leads.length > 0 && 
         <table>
           <thead>
             <tr>
@@ -63,7 +72,7 @@ const LeadPage = () => {
           </thead>
           <tbody>
             {leads.map((lead) => (
-              <tr key={lead.id}>
+              <tr key={lead._id}>
                 <td>{lead.name}</td>
                 <td>{lead.email}</td>
                 <td>{lead.phone}</td>
@@ -71,8 +80,7 @@ const LeadPage = () => {
             ))}
           </tbody>
         </table>
-      } */}
-      <ToastContainer />
+      }
     </>
 	)
 }

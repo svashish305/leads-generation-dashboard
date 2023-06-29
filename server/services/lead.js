@@ -7,7 +7,7 @@ export const createLead = async (body) => {
     if (existingLead) {
       return { error: { code: 400, message: "Lead already exists" } };
     }
-		const lead = await Lead.create({ userId, email, name, phone, otherFields });
+    const lead = await Lead.create({ userId, email, name, phone, otherFields });
     return { lead };
   } catch (error) {
     console.error("Could not create lead due to : ", error);
@@ -15,4 +15,12 @@ export const createLead = async (body) => {
   }
 };
 
-
+export const getLeadsForUser = async (userId) => {
+  try {
+    let leads = await Lead.find({ userId });
+    return { leads };
+  } catch (error) {
+    console.error("Could not get leads due to : ", error);
+    return { error: { code: 500, message: error.message } };
+  }
+};

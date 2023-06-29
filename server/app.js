@@ -4,6 +4,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/auth.js";
+import leadRoutes from "./routes/lead.js";
 import webhookRoutes from "./routes/webhook.js";
 import sseRoutes from "./routes/sse.js";
 
@@ -21,6 +22,7 @@ connectDB();
 app.get("/", (req, res) => res.send("Hello world!"));
 
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/lead", leadRoutes);
 app.use("/api/v1/webhook", webhookRoutes);
 app.use("/api/v1/sse", sseRoutes);
 
