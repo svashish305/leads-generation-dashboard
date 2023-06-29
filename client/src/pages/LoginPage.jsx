@@ -36,6 +36,7 @@ const LoginPage = () => {
       );
       const { success, message, userId } = data;
       if (success) {
+        console.log('>>> loggedin, navigating to dashboard');
         navigate(`/leads/${userId}`);
       } else {
         handleError(message);

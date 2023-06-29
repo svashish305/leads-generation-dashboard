@@ -15,11 +15,14 @@ const LeadPage = () => {
   };
 
   useEffect(() => {
+    console.log(">>>cookies ", cookies);
+
     const fetchData = async () => {
-      console.log("cookies ", cookies);
       if (!cookies.token) {
+        console.log('>>>no token');
         navigate('/');
       } else {
+        console.log('>>>token exists');
         try {
           const { data } = await axios.get(
             `${import.meta.env.VITE_API_URL}/api/v1/auth/user`,
