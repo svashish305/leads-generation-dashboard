@@ -2,10 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import connectDB from "./config/db.js";
-import authRoutes from "./routes/auth.js";
-import leadRoutes from "./routes/lead.js";
-import webhookRoutes from "./routes/webhook.js";
-import sseRoutes from "./routes/sse.js";
+import routes from "./routes/index.js";
 
 dotenv.config();
 const app = express();
@@ -16,10 +13,7 @@ connectDB();
 
 app.get("/health-check", (req, res) => res.send("Hello world!"));
 
-app.use("/api/v1/auth", authRoutes);
-app.use("/api/v1/lead", leadRoutes);
-app.use("/api/v1/webhook", webhookRoutes);
-app.use("/api/v1/sse", sseRoutes);
+app.use("/api/v1", routes);
 
 const port = process.env.PORT;
 
