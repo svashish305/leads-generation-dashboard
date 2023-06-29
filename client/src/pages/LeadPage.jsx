@@ -15,6 +15,7 @@ const LeadPage = () => {
   };
 
   useEffect(() => {
+    console.log('document.cookie', document.cookie);
     console.log(">>>cookies ", cookies);
 
     const fetchData = async () => {
