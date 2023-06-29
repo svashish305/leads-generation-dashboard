@@ -5,6 +5,7 @@ const leadSchema = new mongoose.Schema(
     userId: {
       type: Number,
       required: true,
+      index: true,
     },
     name: {
       type: String,
