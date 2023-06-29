@@ -1,49 +1,34 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useCookies } from 'react-cookie';
 import axios from 'axios';
 
 const LeadPage = () => {
   const { userId } = useParams();
   const navigate = useNavigate();
-  const [cookies, removeCookie] = useCookies(['token']);
   const [leads, setLeads] = useState([]);
 
   const logOut = () => {
-    removeCookie('token');
     navigate('/');
   };
 
   useEffect(() => {
-    console.log(">>>cookies ", cookies);
-
     const fetchData = async () => {
-      if (!cookies.token) {
-        console.log('>>>no token');
-        navigate('/');
-      } else {
-        console.log('>>>token exists');
-        try {
-          const { data } = await axios.get(
-            `${import.meta.env.VITE_API_URL}/api/v1/auth/user`,
-            { withCredentials: true }
-          );
-          const { success } = data;
-          if (!success) {
-            removeCookie('token');
-            navigate('/');
-          }
-        } catch (error) {
-          console.error(error);
-          removeCookie('token');
+      try {
+        const { data } = await axios.get(
+          `${import.meta.env.VITE_API_URL}/api/v1/auth/user`
+        );
+        const { success, user = null } = data;
+        if (!success || user.userId !== parseInt(userId, 10)) {
           navigate('/');
         }
+      } catch (error) {
+        console.error(error);
+        navigate('/');
       }
 
       try {
         const { data } = await axios.get(
-          `${import.meta.env.VITE_API_URL}/api/v1/lead`,
-          { withCredentials: true }
+          `${import.meta.env.VITE_API_URL}/api/v1/lead`
         );
         const { success, leads = [] } = data;
         if (success) {
@@ -55,7 +40,7 @@ const LeadPage = () => {
     };
 
     fetchData();
-  }, [cookies, navigate, removeCookie]);
+  }, [navigate, userId]);
 
   useEffect(() => {
     const eventSource = new EventSource(`${import.meta.env.VITE_API_URL}/api/v1/sse`);

@@ -11,8 +11,9 @@ export const signup = async (body) => {
     }
     let user = new User({ email, password });
     user = await user.save();
-    const token = createSecretToken(user.userId);
-    return { token, user };
+    const { userId } = user.toObject();
+    const token = createSecretToken(userId);
+    return { token, userId };
   } catch (error) {
     console.error("Could not signup user due to : ", error);
     return { error: { code: 500, message: error.message } };

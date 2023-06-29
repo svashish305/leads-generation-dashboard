@@ -2,27 +2,16 @@ import { signup, login } from "../services/auth.js";
 
 export const signupController = async (req, res) => {
   try {
-    const { token = null, user = null, error = null } = await signup(req.body);
+    const { token = null, userId = null, error = null } = await signup(req.body);
     if (error) {
       const { code, message } = error;
       return res.status(code).json({ message });
     }
-    res.cookie("token", token, {
-      // withCredentials: true,
-      // domain: process.env.COOKIE_DOMAIN,
-      path: "/",
-      sameSite: "None",
-      secure: true,
-      httpOnly: false,
-    });
-    const userResponse = {
-      userId: user.userId,
-      email: user.email,
-    };
     return res.status(201).json({
       message: "User signed up successfully",
       success: true,
-      user: userResponse,
+      userId,
+      token,
     });
   } catch (error) {
     console.error("Unable to signup user due to : ", error);
@@ -39,17 +28,12 @@ export const loginController = async (req, res) => {
       const { code, message } = error;
       return res.status(code).json({ message });
     }
-    res.cookie("token", token, {
-      // withCredentials: true,
-      // domain: process.env.COOKIE_DOMAIN,
-      path: "/",
-      sameSite: "None",
-      secure: true,
-      httpOnly: false,
+    return res.status(200).json({
+      message: "User logged in successfully",
+      success: true,
+      userId,
+      token,
     });
-    return res
-      .status(200)
-      .json({ message: "User logged in successfully", success: true, userId });
   } catch (error) {
     console.error("Unable to login user due to : ", error);
     return res

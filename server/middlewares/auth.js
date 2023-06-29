@@ -3,7 +3,7 @@ import User from "../models/user.js";
 
 export const validateUser = async (req, res, next) => {
   const { userId = null } = req.params;
-  const token = req.cookies.token;
+  const token = req.headers.authorization?.split(" ")[1];
   if (!token) {
     return res.status(401).json({ message: "Invalid User" });
   }

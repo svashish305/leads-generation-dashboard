@@ -31,12 +31,12 @@ const SignupPage = () => {
         `${import.meta.env.VITE_API_URL}/api/v1/auth/signup`,
         {
           ...form,
-        },
-        { withCredentials: true }
+        }
       );
-      const { success, message, user } = data;
+      const { success, message, token, userId } = data;
       if (success) {
-        navigate(`/leads/${user.userId}`);
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        navigate(`/leads/${userId}`);
       } else {
         handleError(message);
       }
