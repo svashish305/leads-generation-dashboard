@@ -23,11 +23,6 @@ const SignupPage = () => {
     toast.error(err, {
       position: 'bottom-left',
     });
-	
-  const handleSuccess = (msg) =>
-    toast.success(msg, {
-      position: 'bottom-right',
-    });
 
 	const handleSubmit = async (e) => {
     e.preventDefault();
@@ -41,10 +36,7 @@ const SignupPage = () => {
       );
       const { success, message, user } = data;
       if (success) {
-        handleSuccess(message);
-        setTimeout(() => {
-          navigate(`/leads/${user.userId}`);
-        }, 1000);
+        navigate(`/leads/${user.userId}`);
       } else {
         handleError(message);
       }

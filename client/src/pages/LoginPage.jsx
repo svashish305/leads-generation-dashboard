@@ -23,11 +23,6 @@ const LoginPage = () => {
     toast.error(err, {
       position: 'bottom-left',
     });
-	
-  const handleSuccess = (msg) =>
-    toast.success(msg, {
-      position: 'bottom-right',
-    });
 
 	const handleSubmit = async (e) => {
     e.preventDefault();
@@ -41,7 +36,6 @@ const LoginPage = () => {
       );
       const { success, message, userId } = data;
       if (success) {
-        handleSuccess(message);
         navigate(`/leads/${userId}`);
       } else {
         handleError(message);
