@@ -19,7 +19,7 @@ app.use(cors({
 
 connectDB();
 
-app.get("/", (req, res) => res.send("Hello world!"));
+app.get("/health-check", (req, res) => res.send("Hello world!"));
 
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/lead", leadRoutes);
