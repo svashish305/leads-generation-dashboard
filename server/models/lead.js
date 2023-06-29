@@ -20,8 +20,7 @@ const leadSchema = new mongoose.Schema(
       required: true,
     },
     otherFields: {
-      type: Object,
-      default: {},
+      type: mongoose.Schema.Types.Mixed,
     },
   },
   {
