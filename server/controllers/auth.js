@@ -9,7 +9,7 @@ export const signupController = async (req, res) => {
     }
     res.cookie("token", token, {
       withCredentials: true,
-      // domain: process.env.COOKIE_DOMAIN,
+      domain: process.env.COOKIE_DOMAIN,
       path: "/",
       sameSite: "None",
       secure: true,
@@ -41,7 +41,7 @@ export const loginController = async (req, res) => {
     }
     res.cookie("token", token, {
       withCredentials: true,
-      // domain: process.env.COOKIE_DOMAIN,
+      domain: process.env.COOKIE_DOMAIN,
       path: "/",
       sameSite: "None",
       secure: true,
