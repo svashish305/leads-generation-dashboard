@@ -59,7 +59,6 @@ const LoginPage = () => {
 	return (
 		<div className='form_container'>
       <h2>Login Account</h2>
-      Server URL: {import.meta.env.VITE_API_URL}
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor='email'>Email</label>
