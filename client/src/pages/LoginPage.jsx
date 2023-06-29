@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import axios from 'axios';
@@ -9,6 +9,15 @@ const LoginPage = () => {
     email: '',
     password: '',
   });
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      const userId = localStorage.getItem('userId');
+      navigate(`/leads/${userId}`);
+    }
+  }, [navigate]);
+
   const { email, password } = form;
 
 	const handleOnChange = (e) => {
