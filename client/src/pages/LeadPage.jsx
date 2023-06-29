@@ -8,31 +8,47 @@ const LeadPage = () => {
   const [leads, setLeads] = useState([]);
 
   const logOut = () => {
+    localStorage.removeItem('token');
     navigate('/');
   };
 
   useEffect(() => {
+    const token = localStorage.getItem('token');
+
     const fetchData = async () => {
       try {
-        const { data } = await axios.get(
-          `${import.meta.env.VITE_API_URL}/api/v1/auth/user`
-        );
-        const { success, user = null } = data;
-        if (!success || user.userId !== parseInt(userId, 10)) {
-          navigate('/');
+        if (token) {
+          const { data } = await axios.get(
+            `${import.meta.env.VITE_API_URL}/api/v1/auth/user`, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          const { success, user = null } = data;
+          if (!success || user.userId !== parseInt(userId, 10)) {
+            navigate('/');
+          }
         }
       } catch (error) {
         console.error(error);
+        localStorage.removeItem('token');
         navigate('/');
       }
 
       try {
-        const { data } = await axios.get(
-          `${import.meta.env.VITE_API_URL}/api/v1/lead`
-        );
-        const { success, leads = [] } = data;
-        if (success) {
-          setLeads(leads);
+        if (token) {
+          const { data } = await axios.get(
+            `${import.meta.env.VITE_API_URL}/api/v1/lead`, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          const { success, leads = [] } = data;
+          if (success) {
+            setLeads(leads);
+          }
         }
       } catch (error) {
         console.error(error);

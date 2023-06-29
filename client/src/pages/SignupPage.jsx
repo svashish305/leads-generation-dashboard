@@ -35,7 +35,7 @@ const SignupPage = () => {
       );
       const { success, message, token, userId } = data;
       if (success) {
-        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        localStorage.setItem('token', token);
         navigate(`/leads/${userId}`);
       } else {
         handleError(message);
