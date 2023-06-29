@@ -35,9 +35,7 @@ const LoginPage = () => {
         { withCredentials: true }
       );
       const { success, message, userId } = data;
-      console.log('>>>data ', data);
       if (success) {
-        console.log('>>> loggedin, navigating to dashboard', userId);
         navigate(`/leads/${userId}`);
       } else {
         handleError(message);
