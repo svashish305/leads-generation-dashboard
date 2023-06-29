@@ -11,6 +11,7 @@ export const signupController = async (req, res) => {
       withCredentials: true,
       httpOnly: false,
       sameSite: "none",
+      secure: true,
     });
     const userResponse = {
       userId: user.userId,
@@ -23,7 +24,9 @@ export const signupController = async (req, res) => {
     });
   } catch (error) {
     console.error("Unable to signup user due to : ", error);
-    return res.status(500).json({ message: "Unable to signup user", success: false });
+    return res
+      .status(500)
+      .json({ message: "Unable to signup user", success: false });
   }
 };
 
@@ -38,13 +41,16 @@ export const loginController = async (req, res) => {
       withCredentials: true,
       httpOnly: false,
       sameSite: "none",
+      secure: true,
     });
     return res
       .status(200)
       .json({ message: "User logged in successfully", success: true, userId });
   } catch (error) {
     console.error("Unable to login user due to : ", error);
-    return res.status(500).json({ message: "Unable to login user", success: false });
+    return res
+      .status(500)
+      .json({ message: "Unable to login user", success: false });
   }
 };
 
@@ -52,11 +58,15 @@ export const getUserController = async (req, res) => {
   try {
     const user = req.user;
     if (!user) {
-      return res.status(404).json({ message: "User not found", success: false });
+      return res
+        .status(404)
+        .json({ message: "User not found", success: false });
     }
     return res.status(200).json({ message: "User found", success: true, user });
   } catch (error) {
     console.error("Unable to get user due to : ", error);
-    return res.status(500).json({ message: "Unable to get user", success: false });
+    return res
+      .status(500)
+      .json({ message: "Unable to get user", success: false });
   }
 };
