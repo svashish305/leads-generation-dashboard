@@ -9,39 +9,49 @@ const LeadPage = () => {
   const [cookies, removeCookie] = useCookies([]);
   const [leads, setLeads] = useState([]);
 
-  useEffect(() => {
-    const verifyCookie = async () => {
-      if (!cookies.token) {
-        navigate('/login');
-      }
-      const { data } = await axios.get(
-        `${import.meta.env.VITE_APP_API_URL}/api/v1/auth/user`,
-        { withCredentials: true }
-      );
-      const { success } = data;
-      if (!success) {
-        removeCookie('token');
-        navigate('/login');
-      }
-    };
-    verifyCookie();
-  }, [cookies, navigate, removeCookie]);
-
   const logOut = () => {
     removeCookie('token');
     navigate('/login');
   };
 
   useEffect(() => {
-    const fetchLeads = async () => {
-      const { data } = await axios.get(`${import.meta.env.VITE_APP_API_URL}/api/v1/lead`, { withCredentials: true });
-      const { success, leads = [] } = data;
-      if (success) {
-        setLeads(leads);
+    const fetchData = async () => {
+      if (!cookies.token) {
+        navigate('/login');
+      } else {
+        try {
+          const { data } = await axios.get(
+            `${import.meta.env.VITE_APP_API_URL}/api/v1/auth/user`,
+            { withCredentials: true }
+          );
+          const { success } = data;
+          if (!success) {
+            removeCookie('token');
+            navigate('/login');
+          }
+        } catch (error) {
+          console.error(error);
+          removeCookie('token');
+          navigate('/login');
+        }
+      }
+
+      try {
+        const { data } = await axios.get(
+          `${import.meta.env.VITE_APP_API_URL}/api/v1/lead`,
+          { withCredentials: true }
+        );
+        const { success, leads = [] } = data;
+        if (success) {
+          setLeads(leads);
+        }
+      } catch (error) {
+        console.error(error);
       }
     };
-    fetchLeads();
-  }, []);
+
+    fetchData();
+  }, [cookies, navigate, removeCookie]);
 
   useEffect(() => {
     const eventSource = new EventSource(`${import.meta.env.VITE_APP_API_URL}/api/v1/sse`);
@@ -57,10 +67,10 @@ const LeadPage = () => {
   }, [userId]);
 	
 	return (
-		<>
+		<div className='lead_page_container'>
       <h3>Your Webhook URL</h3>
       {import.meta.env.VITE_APP_API_URL}/api/v1/webhook/{userId}
-      <button onClick={logOut}>Log Out</button>
+      <button className='logout_button' onClick={logOut}>Log Out</button>
       {leads.length > 0 && 
         <table>
           <thead>
@@ -81,7 +91,7 @@ const LeadPage = () => {
           </tbody>
         </table>
       }
-    </>
+    </div>
 	)
 }
 
