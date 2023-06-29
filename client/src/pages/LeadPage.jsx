@@ -21,7 +21,7 @@ const LeadPage = () => {
       } else {
         try {
           const { data } = await axios.get(
-            `${import.meta.env.VITE_APP_API_URL}/api/v1/auth/user`,
+            `${import.meta.env.VITE_API_URL}/api/v1/auth/user`,
             { withCredentials: true }
           );
           const { success } = data;
@@ -38,7 +38,7 @@ const LeadPage = () => {
 
       try {
         const { data } = await axios.get(
-          `${import.meta.env.VITE_APP_API_URL}/api/v1/lead`,
+          `${import.meta.env.VITE_API_URL}/api/v1/lead`,
           { withCredentials: true }
         );
         const { success, leads = [] } = data;
@@ -54,7 +54,7 @@ const LeadPage = () => {
   }, [cookies, navigate, removeCookie]);
 
   useEffect(() => {
-    const eventSource = new EventSource(`${import.meta.env.VITE_APP_API_URL}/api/v1/sse`);
+    const eventSource = new EventSource(`${import.meta.env.VITE_API_URL}/api/v1/sse`);
 
     eventSource.onmessage = (event) => {
       const leadData = JSON.parse(event.data);
@@ -69,7 +69,7 @@ const LeadPage = () => {
 	return (
 		<div className='lead_page_container'>
       <h3>Your Webhook URL</h3>
-      {import.meta.env.VITE_APP_API_URL}/api/v1/webhook/{userId}
+      {import.meta.env.VITE_API_URL}/api/v1/webhook/{userId}
       <button className='logout_button' onClick={logOut}>Log Out</button>
       {leads.length > 0 && 
         <table>

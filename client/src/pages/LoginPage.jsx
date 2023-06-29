@@ -33,7 +33,7 @@ const LoginPage = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        `${import.meta.env.VITE_APP_API_URL}/api/v1/auth/login`,
+        `${import.meta.env.VITE_API_URL}/api/v1/auth/login`,
         {
           ...form,
         },
@@ -59,6 +59,7 @@ const LoginPage = () => {
 	return (
 		<div className='form_container'>
       <h2>Login Account</h2>
+      Server URL: {import.meta.env.VITE_API_URL}
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor='email'>Email</label>
