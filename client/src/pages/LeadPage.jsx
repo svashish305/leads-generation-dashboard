@@ -12,7 +12,6 @@ const LeadPage = () => {
   const [webhookUrl, setWebhookUrl] = useState('');
   const [isWebhookSet, setIsWebhookSet] = useState(false);
   const tableRef = useRef(null);
-  const prevScrollTop = useRef(0);
 
   const logOut = () => {
     localStorage.removeItem('token');
@@ -130,23 +129,14 @@ const LeadPage = () => {
   }
 
   const handleScroll = () => {
-    const { scrollTop } = tableRef.current;
-    if (scrollTop < prevScrollTop.current) {
-      // User is scrolling up
-      if (scrollTop === 0 && page > 1) {
-        setPage((prevPage) => prevPage - 1);
-      }
-    } else {
-      // User is scrolling down
-      const { clientHeight, scrollHeight } = tableRef.current;
-      if (scrollTop + clientHeight >= scrollHeight) {
-        // Check if it's the last page
-        if (page < totalPages) {
-          setPage((prevPage) => prevPage + 1);
-        }
+    const { scrollTop, clientHeight, scrollHeight } = tableRef.current;
+  
+    if (scrollTop + clientHeight >= scrollHeight) {
+      // Check if it's the last page
+      if (page < totalPages) {
+        setPage((prevPage) => prevPage + 1);
       }
     }
-    prevScrollTop.current = scrollTop;
   };
 	
 	return (
