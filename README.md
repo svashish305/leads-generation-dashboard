@@ -10,7 +10,7 @@ Frontend is deployed on Render [here](https://leads-generation-frontend.onrender
 
 We can use the following curl command to submit a lead to the webhook endpoint.
 Webhook endpoint is `https://lead-generation.onrender.com/api/v1/webhook/<userId>` where userId denotes the webhook endpoint for that user.
-The token can be found in login/signup api response.
+The token can be found in login/signup api response or in localStorage.
 
 ```bash
 curl --location --request POST 'https://lead-generation.onrender.com/api/v1/webhook/1' \

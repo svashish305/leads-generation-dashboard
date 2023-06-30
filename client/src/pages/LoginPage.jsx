@@ -61,7 +61,7 @@ const LoginPage = () => {
   };
 
 	return (
-		<div className='form_container'>
+		<div className='formContainer'>
       <h2>Login Account</h2>
       <form onSubmit={handleSubmit}>
         <div>

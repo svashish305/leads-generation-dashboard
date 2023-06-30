@@ -30,7 +30,7 @@ body {
   color: white;
 }
 
-.form_container {
+.formContainer {
   background-color: #fff;
   padding: 2rem 3rem;
   border-radius: 0.5rem;
@@ -39,25 +39,25 @@ body {
   box-shadow: 8px 8px 24px 0px rgba(66, 68, 90, 1);
 }
 
-.form_container > h2 {
+.formContainer > h2 {
   margin-block: 1rem;
   padding-block: 0.6rem;
   color: rgba(49, 4, 87, 1);
 }
 
-.form_container > form {
+.formContainer > form {
   display: flex;
   flex-direction: column;
   gap: 1.4rem;
 }
 
-.form_container div {
+.formContainer div {
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
 }
 
-.form_container input {
+.formContainer input {
   border: none;
   padding: 0.5rem;
   border-bottom: 1px solid gray;
@@ -65,12 +65,12 @@ body {
   outline: none;
 }
 
-.form_container input::placeholder {
+.formContainer input::placeholder {
   font-size: 0.9rem;
   font-style: italic;
 }
 
-.form_container button {
+.formContainer button {
   background-color: rgba(49, 4, 87, 1);
   color: #fff;
   border: none;
@@ -85,7 +85,7 @@ span a {
   color: rgba(49, 4, 87, 1);
 }
 
-.home_page {
+.homePage {
   height: 100vh;
   width: 100vw;
   background: #000;
@@ -99,11 +99,11 @@ span a {
   gap: 1rem;
 }
 
-.home_page span {
+.homePage span {
   color: rgba(49, 4, 87, 1);
 }
 
-.home_page button {
+.homePage button {
   background-color: rgb(27, 73, 83);
   color: #fff;
   cursor: pointer;
@@ -114,18 +114,30 @@ span a {
   border: none;
 }
 
-.home_page button:hover {
+.homePage button:hover {
   background-color: rgba(49, 4, 87, 1);
 }
 
-.lead_page_container {
+.leadPageContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
+  width: 100vw;
+  height: 100vh;
+  padding: 100px;
 }
 
-.logout_button {
+.leadPageContainer input {
+  border: none;
+  padding: 0.5rem;
+  font-size: 1.1rem;
+  outline: none;
+  width: 40vw;
+  color: #fff;
+}
+
+.logoutButton {
   background-color: #fff;
   color: #000;
   border: none;
@@ -136,6 +148,15 @@ span a {
   position: absolute;
   top: 1rem;
   right: 1rem;
+}
+
+.secondaryButton {
+  background-color: #fff;
+  color: #000;
+  border: none;
+  padding: 0.6rem;
+  cursor: pointer;
+  border-radius: 0.3rem;
 }
 
 table {
@@ -164,10 +185,10 @@ tbody tr:hover {
 }
 
 @media only screen and (max-width: 1200px){
-  .home_page{
+  .homePage{
     font-size: 1.5rem;
   }
-  .home_page button {
+  .homePage button {
     padding: 0.6rem 1rem;
     font-size: 1.5rem;
   }

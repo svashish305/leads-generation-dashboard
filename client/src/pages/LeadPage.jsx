@@ -6,6 +6,8 @@ const LeadPage = () => {
   const { userId } = useParams();
   const navigate = useNavigate();
   const [leads, setLeads] = useState([]);
+  const [webhookUrl, setWebhookUrl] = useState(null);
+  const [isWebhookSet, setIsWebhookSet] = useState(false);
 
   const logOut = () => {
     localStorage.removeItem('token');
@@ -13,14 +15,14 @@ const LeadPage = () => {
     navigate('/');
   };
 
-  useEffect(() => {
-    const token = localStorage.getItem('token');
+  const token = localStorage.getItem('token');
 
+  useEffect(() => {
     const fetchData = async () => {
       try {
         if (token) {
           const { data } = await axios.get(
-            `${import.meta.env.VITE_API_URL}/api/v1/auth/user`, {
+            `${import.meta.env.VITE_API_URL}/api/v1/user`, {
               headers: {
                 Authorization: `Bearer ${token}`,
               },
@@ -31,6 +33,12 @@ const LeadPage = () => {
             localStorage.removeItem('token');
             localStorage.removeItem('userId');
             navigate('/');
+          }
+          if (user.webhookUrl) {
+            setWebhookUrl(`${import.meta.env.VITE_API_URL}/${user.webhookUrl}`);
+            setIsWebhookSet(true);
+          } else {
+            setWebhookUrl(`${import.meta.env.VITE_API_URL}/api/v1/webhook/${userId}`);
           }
         }
       } catch (error) {
@@ -60,9 +68,12 @@ const LeadPage = () => {
     };
 
     fetchData();
-  }, [navigate, userId]);
+  }, [navigate, token, userId]);
 
   useEffect(() => {
+    if (!isWebhookSet) {
+      return;
+    }
     const eventSource = new EventSource(`${import.meta.env.VITE_API_URL}/api/v1/sse`);
 
     eventSource.onmessage = (event) => {
@@ -73,13 +84,44 @@ const LeadPage = () => {
     };
 
     return () => eventSource.close();
-  }, [userId]);
+  }, [isWebhookSet, userId]);
+
+  const updateWebhookUrl = async () => {
+    try {
+      if (token) {
+        const { data } = await axios.patch(
+          `${import.meta.env.VITE_API_URL}/api/v1/user/${userId}`, {
+            webhookUrl: webhookUrl.replace(`${import.meta.env.VITE_API_URL}/`, ''),
+          }, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const { error = null, user = null } = data;
+        if (user) {
+          setWebhookUrl(`${import.meta.env.VITE_API_URL}/${user.webhookUrl}`);
+          setIsWebhookSet(true);
+        } else if (error) {
+          console.error(error);
+        }
+      }
+    } catch (error) {
+      console.error('Unable to update webhookUrl on user');
+    }
+  }
 	
 	return (
-		<div className='lead_page_container'>
+		<div className='leadPageContainer'>
+      <button className='logoutButton' onClick={logOut}>Log Out</button>
       <h3>Your Webhook URL</h3>
-      {import.meta.env.VITE_API_URL}/api/v1/webhook/{userId}
-      <button className='logout_button' onClick={logOut}>Log Out</button>
+      <div className=''>
+        <input type="text" value={webhookUrl} disabled />
+        {!isWebhookSet && (
+          <button className="secondaryButton" onClick={updateWebhookUrl}>
+          Confirm
+        </button>)}
+      </div>
       {leads.length > 0 && 
         <table>
           <thead>
