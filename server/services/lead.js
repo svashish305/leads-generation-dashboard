@@ -26,24 +26,26 @@ export const getLeadsForUser = async (
     const pipeline = [
       { $match: { userId } },
       { $sort: { [sortBy]: sortOrder } },
-      { $facet: {
+      {
+        $facet: {
           paginatedData: [
             { $skip: (page - 1) * pageSize },
             { $limit: pageSize },
-            { $project: { _id: 0 } }
+            { $project: { _id: 0 } },
           ],
-          totalCount: [
+          totalCountData: [
             { $group: { _id: null, count: { $sum: 1 } } },
-            { $project: { _id: 0, count: 1 } }
-          ]
-        }
-      }
+            { $project: { _id: 0, count: 1 } },
+          ],
+        },
+      },
     ];
 
-    const [result] = await Lead.aggregate(pipeline);
-    const { paginatedData: leads, totalCount } = result;
-    const totalPages = Math.ceil(totalCount[0].count / pageSize);
-    return { leads, totalPages };
+    const [result = []] = await Lead.aggregate(pipeline);
+    const { paginatedData = [], totalCountData = [] } = result;
+    const totalCount = totalCountData?.[0]?.count || 0;
+    const totalPages = Math.ceil(totalCount / pageSize);
+    return { leads: paginatedData, totalPages };
   } catch (error) {
     console.error("Could not get leads due to : ", error);
     return { error: { code: 500, message: error.message } };
