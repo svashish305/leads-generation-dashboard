@@ -15,10 +15,35 @@ export const createLead = async (body) => {
   }
 };
 
-export const getLeadsForUser = async (userId) => {
+export const getLeadsForUser = async (
+  userId,
+  page,
+  pageSize,
+  sortBy,
+  sortOrder
+) => {
   try {
-    let leads = await Lead.find({ userId });
-    return { leads };
+    const pipeline = [
+      { $match: { userId } },
+      { $sort: { [sortBy]: sortOrder } },
+      { $facet: {
+          paginatedData: [
+            { $skip: (page - 1) * pageSize },
+            { $limit: pageSize },
+            { $project: { _id: 0 } }
+          ],
+          totalCount: [
+            { $group: { _id: null, count: { $sum: 1 } } },
+            { $project: { _id: 0, count: 1 } }
+          ]
+        }
+      }
+    ];
+
+    const [result] = await Lead.aggregate(pipeline);
+    const { paginatedData: leads, totalCount } = result;
+    const totalPages = Math.ceil(totalCount[0].count / pageSize);
+    return { leads, totalPages };
   } catch (error) {
     console.error("Could not get leads due to : ", error);
     return { error: { code: 500, message: error.message } };

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -6,8 +6,13 @@ const LeadPage = () => {
   const { userId } = useParams();
   const navigate = useNavigate();
   const [leads, setLeads] = useState([]);
-  const [webhookUrl, setWebhookUrl] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [webhookUrl, setWebhookUrl] = useState('');
   const [isWebhookSet, setIsWebhookSet] = useState(false);
+  const tableRef = useRef(null);
+  const prevScrollTop = useRef(0);
 
   const logOut = () => {
     localStorage.removeItem('token');
@@ -47,28 +52,41 @@ const LeadPage = () => {
         localStorage.removeItem('userId');
         navigate('/');
       }
+    };
 
+    fetchData();
+  }, [navigate, token, userId]);
+
+  useEffect(() => {
+    const fetchLeads = async () => {
       try {
         if (token) {
+          setIsLoading(true);
           const { data } = await axios.get(
-            `${import.meta.env.VITE_API_URL}/api/v1/lead`, {
+            `${import.meta.env.VITE_API_URL}/api/v1/lead?page=${page}`, {
               headers: {
                 Authorization: `Bearer ${token}`,
               },
             }
           );
-          const { success, leads = [] } = data;
+          const { success, leads = [], totalPages = 0 } = data;
           if (success) {
-            setLeads(leads);
+            if (page === 1) {
+              setLeads(leads);
+            } else {
+              setLeads((prevLeads) => [...prevLeads, ...leads]);
+            }
+            setTotalPages(totalPages);
           }
         }
       } catch (error) {
         console.error(error);
+      } finally {
+        setIsLoading(false);
       }
     };
-
-    fetchData();
-  }, [navigate, token, userId]);
+    fetchLeads();
+  }, [token, page]);
 
   useEffect(() => {
     if (!isWebhookSet) {
@@ -110,37 +128,60 @@ const LeadPage = () => {
       console.error('Unable to update webhookUrl on user');
     }
   }
+
+  const handleScroll = () => {
+    const { scrollTop } = tableRef.current;
+    if (scrollTop < prevScrollTop.current) {
+      // User is scrolling up
+      if (scrollTop === 0 && page > 1) {
+        setPage((prevPage) => prevPage - 1);
+      }
+    } else {
+      // User is scrolling down
+      const { clientHeight, scrollHeight } = tableRef.current;
+      if (scrollTop + clientHeight >= scrollHeight) {
+        // Check if it's the last page
+        if (page < totalPages) {
+          setPage((prevPage) => prevPage + 1);
+        }
+      }
+    }
+    prevScrollTop.current = scrollTop;
+  };
 	
 	return (
 		<div className='leadPageContainer'>
       <button className='logoutButton' onClick={logOut}>Log Out</button>
       <h3>Your Webhook URL</h3>
-      <div className=''>
-        <input type="text" value={webhookUrl} disabled />
+      <div className='webhookUrlContainer'>
+        <input type='text' value={webhookUrl} disabled />
         {!isWebhookSet && (
-          <button className="secondaryButton" onClick={updateWebhookUrl}>
+          <button className='secondaryButton' onClick={updateWebhookUrl}>
           Confirm
         </button>)}
       </div>
+      {isLoading && <div className='loading'>Loading...</div>}
       {leads.length > 0 && 
-        <table>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Phone</th>
-            </tr>
-          </thead>
-          <tbody>
-            {leads.map((lead) => (
-              <tr key={lead._id}>
-                <td>{lead.name}</td>
-                <td>{lead.email}</td>
-                <td>{lead.phone}</td>
+        <div className='leadsTable' onScroll={handleScroll}>
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody ref={tableRef}>
+              {leads.map((lead) => (
+                <tr key={lead._id}>
+                  <td>{lead.name}</td>
+                  <td>{lead.email}</td>
+                  <td>{lead.phone}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       }
     </div>
 	)
