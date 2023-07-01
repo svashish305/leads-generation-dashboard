@@ -3,7 +3,7 @@ import Lead from "../models/lead.js";
 export const createLead = async (body) => {
   try {
     const { userId, name, email, phone, otherFields = null } = body;
-    const existingLead = await Lead.findOne({ email });
+    const existingLead = await Lead.findOne({ userId, email });
     if (existingLead) {
       return { error: { code: 400, message: "Lead already exists" } };
     }
