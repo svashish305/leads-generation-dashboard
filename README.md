@@ -28,7 +28,7 @@ curl --location --request POST '{webhook-url}' \
 ```
 
 An example curl request:
-  
+
 ```bash
 curl --location --request POST 'https://lead-generation.onrender.com/api/v1/webhook/1' \
 --header 'Content-Type: application/json' \
@@ -43,3 +43,49 @@ curl --location --request POST 'https://lead-generation.onrender.com/api/v1/webh
   }
 }'
 ```
+
+## Running the app locally
+
+To run the Leads Generation Dashboard locally, follow these steps:
+Clone the project repository:
+
+```bash
+git clone https://github.com/svashish305/leads-generation-dashboard
+```
+
+Install the required npm packages for both the client and server:
+
+```bash
+cd client && npm install
+cd ../server && npm install
+```
+
+Start the server:
+
+```bash
+cd server && npm run dev
+```
+
+Start the client:
+
+```bash
+cd ../client && npm run dev
+```
+
+Access the application in your browser by visiting http://localhost:5173.
+
+To run the tests, use the following commands:
+
+Server tests:
+
+```bash
+cd server && npm run test
+```
+
+Client tests:
+
+```bash
+cd client && npm run test
+```
+
+These commands will execute the respective test suites for the server and client applications.
