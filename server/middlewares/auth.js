@@ -20,7 +20,6 @@ export const validateUser = async (req, res, next) => {
     req.user = others;
     next();
   } catch (error) {
-    console.error("Token Validation error:", error);
     return res.status(401).json({ message: "Invalid User" });
   }
 };

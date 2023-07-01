@@ -1,8 +1,8 @@
 import { isValidPhoneNumber } from "libphonenumber-js";
-import { EMAIL_REGEX } from "../config/constants.js";
+import { NAME_REGEX, EMAIL_REGEX } from "../config/constants.js";
 
 export const validateName = (name = "") => {
-	return name.trim().length > 0;
+  return name.trim().length > 0 && NAME_REGEX.test(name.trim());
 };
 
 export const validateEmail = (email = "") => {
@@ -10,6 +10,6 @@ export const validateEmail = (email = "") => {
 };
 
 export const validateAndFormatPhone = (phone = "") => {
-	const formattedPhone = phone.startsWith("+") ? phone.trim() : `+${phone.trim()}`;
-	return isValidPhoneNumber(formattedPhone) ? formattedPhone : null;
+  const formattedPhone = `+${phone.trim().replace(/\D/g, '')}`;
+  return isValidPhoneNumber(formattedPhone) ? formattedPhone : null;
 };
