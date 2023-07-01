@@ -6,7 +6,7 @@ export const validateName = (name = "") => {
 };
 
 export const validateEmail = (email = "") => {
-  return EMAIL_REGEX.test(email);
+  return email.trim().length > 0 && EMAIL_REGEX.test(email.trim());
 };
 
 export const validateAndFormatPhone = (phone = "") => {
