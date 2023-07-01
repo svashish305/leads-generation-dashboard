@@ -132,7 +132,6 @@ const LeadPage = () => {
     const { scrollTop, clientHeight, scrollHeight } = tableRef.current;
   
     if (scrollTop + clientHeight >= scrollHeight) {
-      // Check if it's the last page
       if (page < totalPages) {
         setPage((prevPage) => prevPage + 1);
       }
