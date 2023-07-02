@@ -32,6 +32,18 @@ describe("Server tests", () => {
   let authToken;
   let userId;
 
+  describe("GET /api/v1/health-check", () => {
+    it("should return 200", async () => {
+      const response = await request(app).get("/api/v1/health-check");
+
+      expect(response.status).toBe(200);
+      expect(response.body).toHaveProperty(
+        "message",
+        "Server is up and running!"
+      );
+    });
+  });
+
   describe("POST /api/v1/auth/signup", () => {
     it("should register a new user", async () => {
       const user = {
