@@ -1,10 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import './LeadPage.css';
 
 const LeadPage = () => {
   const { userId } = useParams();
   const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState('');
   const [webhookUrl, setWebhookUrl] = useState('');
   const [isWebhookSet, setIsWebhookSet] = useState(false);
   const [leads, setLeads] = useState([]);
@@ -34,8 +36,9 @@ const LeadPage = () => {
               },
             }
           );
-          const { success, user = null } = data;
+          const { success, user = null, message } = data;
           if (!success || user.userId !== parseInt(userId, 10)) {
+            setErrorMessage(message);
             localStorage.removeItem('token');
             localStorage.removeItem('userId');
             navigate('/');
@@ -48,7 +51,7 @@ const LeadPage = () => {
           }
         }
       } catch (error) {
-        console.error(error);
+        setErrorMessage('Error fetching user data');
         localStorage.removeItem('token');
         localStorage.removeItem('userId');
         navigate('/');
@@ -70,16 +73,16 @@ const LeadPage = () => {
             },
           }
         );
-        const { error = null, user = null } = data;
+        const { error = null, message, user = null } = data;
         if (user) {
           setWebhookUrl(`${import.meta.env.VITE_API_URL}/${user.webhookUrl}`);
           setIsWebhookSet(true);
         } else if (error) {
-          console.error(error);
+          setErrorMessage(message);
         }
       }
     } catch (error) {
-      console.error('Unable to update webhookUrl on user');
+      setErrorMessage('Error updating webhook URL');
     }
   }
   
@@ -114,7 +117,7 @@ const LeadPage = () => {
               },
             }
           );
-          const { success, leads = [], totalPages = 0, totalCount = 0, pageSize } = data;
+          const { success, message, leads = [], totalPages = 0, totalCount = 0, pageSize } = data;
           if (success) {
             setShowScrollbar(totalCount > pageSize);
             if (page === 1) {
@@ -123,10 +126,12 @@ const LeadPage = () => {
               setLeads((prevLeads) => [...prevLeads, ...leads]);
             }
             setTotalPages(totalPages);
+          } else {
+            setErrorMessage(message);
           }
         }
       } catch (error) {
-        console.error(error);
+        setErrorMessage('Error fetching leads');
       } finally {
         setIsLoading(false);
       }
@@ -157,6 +162,7 @@ const LeadPage = () => {
         </button>)}
       </div>
       {isLoading && <div className='loading'>Loading...</div>}
+      {errorMessage && <div className="error">{errorMessage}</div>}
       {leads.length > 0 && 
         <div className={`leadsTable ${showScrollbar ? 'showScrollbar' : ''}`} onScroll={handleScroll}>
           <table>

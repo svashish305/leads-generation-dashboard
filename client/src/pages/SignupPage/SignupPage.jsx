@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { toast, ToastContainer } from 'react-toastify';
 import axios from 'axios';
 
 const SignupPage = () => {
 	const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState('');
   const [form, setForm] = useState({
     email: '',
     password: '',
@@ -19,13 +19,10 @@ const SignupPage = () => {
     });
   };
 
-	const handleError = (err) =>
-    toast.error(err, {
-      position: 'bottom-left',
-    });
-
 	const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrorMessage('');
+
     try {
       const { data } = await axios.post(
         `${import.meta.env.VITE_API_URL}/api/v1/auth/signup`,
@@ -39,10 +36,17 @@ const SignupPage = () => {
         localStorage.setItem('userId', userId);
         navigate(`/leads/${userId}`);
       } else {
-        handleError(message);
+        setErrorMessage(message);
       }
     } catch (error) {
-      console.error(error);
+      if (error.response) {
+        const { data } = error.response;
+        setErrorMessage(data.message);
+      } else if (error.request) {
+        setErrorMessage('No response received from the server.'); 
+      } else {
+        setErrorMessage('An error occurred while making the request.');
+      }
     }
     setForm({
       ...form,
@@ -77,12 +81,12 @@ const SignupPage = () => {
             onChange={handleOnChange}
           />
         </div>
+        {errorMessage && <div className='error'>{errorMessage}</div>}
         <button type='submit'>Signup</button>
         <span>
           Already have an account? <Link to={'/'}>Login</Link>
         </span>
       </form>
-			<ToastContainer />
     </div>
 	)
 }
