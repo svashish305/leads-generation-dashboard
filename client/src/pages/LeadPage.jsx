@@ -24,7 +24,7 @@ const LeadPage = () => {
   const token = localStorage.getItem('token');
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchUser = async () => {
       try {
         if (token) {
           const { data } = await axios.get(
@@ -55,8 +55,52 @@ const LeadPage = () => {
       }
     };
 
-    fetchData();
+    fetchUser();
   }, [navigate, token, userId]);
+
+  const updateWebhookUrl = async () => {
+    try {
+      if (token) {
+        const { data } = await axios.patch(
+          `${import.meta.env.VITE_API_URL}/api/v1/user/${userId}`, {
+            webhookUrl: webhookUrl.replace(`${import.meta.env.VITE_API_URL}/`, ''),
+          }, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const { error = null, user = null } = data;
+        if (user) {
+          setWebhookUrl(`${import.meta.env.VITE_API_URL}/${user.webhookUrl}`);
+          setIsWebhookSet(true);
+        } else if (error) {
+          console.error(error);
+        }
+      }
+    } catch (error) {
+      console.error('Unable to update webhookUrl on user');
+    }
+  }
+  
+  useEffect(() => {
+    if (!isWebhookSet) {
+      return;
+    }
+    let eventSource = new EventSource(`${import.meta.env.VITE_API_URL}/api/v1/sse`);
+
+    eventSource.onmessage = (event) => {
+      const { type = null, data = null } = JSON.parse(event.data);
+      if (type === 'lead' && data?.userId === parseInt(userId, 10)) {
+        setLeads((prevLeads) => [...prevLeads, data]);
+      }
+    };
+
+    return () => {
+      eventSource.close();
+      eventSource = null;
+    };
+  }, [isWebhookSet, userId]);
 
   useEffect(() => {
     const fetchLeads = async () => {
@@ -89,47 +133,6 @@ const LeadPage = () => {
     };
     fetchLeads();
   }, [token, page]);
-
-  useEffect(() => {
-    if (!isWebhookSet) {
-      return;
-    }
-    const eventSource = new EventSource(`${import.meta.env.VITE_API_URL}/api/v1/sse`);
-
-    eventSource.onmessage = (event) => {
-      const { type = null, data = null } = JSON.parse(event.data);
-      if (type === 'lead' && data?.userId === parseInt(userId, 10)) {
-        setLeads((prevLeads) => [...prevLeads, data]);
-      }
-    };
-
-    return () => eventSource.close();
-  }, [isWebhookSet, userId]);
-
-  const updateWebhookUrl = async () => {
-    try {
-      if (token) {
-        const { data } = await axios.patch(
-          `${import.meta.env.VITE_API_URL}/api/v1/user/${userId}`, {
-            webhookUrl: webhookUrl.replace(`${import.meta.env.VITE_API_URL}/`, ''),
-          }, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        const { error = null, user = null } = data;
-        if (user) {
-          setWebhookUrl(`${import.meta.env.VITE_API_URL}/${user.webhookUrl}`);
-          setIsWebhookSet(true);
-        } else if (error) {
-          console.error(error);
-        }
-      }
-    } catch (error) {
-      console.error('Unable to update webhookUrl on user');
-    }
-  }
 
   const handleScroll = () => {
     const { scrollTop, clientHeight, scrollHeight } = tableRef.current;
