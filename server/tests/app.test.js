@@ -2,8 +2,8 @@ import request from "supertest";
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-import { setupTestEnvironment, teardownTestEnvironment } from "../setupTest.js";
-import routes from "../routes/index.js";
+import { setupTestEnvironment, teardownTestEnvironment } from "../setupTests.js";
+import routes from "../src/routes/index.js";
 
 let app;
 let server;
