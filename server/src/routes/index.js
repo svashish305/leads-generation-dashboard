@@ -9,6 +9,9 @@ import sseRoutes from "./sse.js";
 
 const router = express.Router();
 
+router.get("/health-check", (req, res) =>
+  res.status(200).json({ message: "Server is up and running!" })
+);
 router.use("/auth", authRoutes);
 router.use("/user", validateUser, userRoutes);
 router.use("/lead", validateUser, leadRoutes);

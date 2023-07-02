@@ -17,8 +17,6 @@ app.use(rateLimit({
 
 connectDB();
 
-app.get("/health-check", (req, res) => res.send("Hello world!"));
-
 app.use("/api/v1", routes);
 
 const port = process.env.PORT;
