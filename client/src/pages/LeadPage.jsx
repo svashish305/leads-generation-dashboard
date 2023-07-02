@@ -88,7 +88,7 @@ const LeadPage = () => {
       }
     };
     fetchLeads();
-  }, [token, page, isScrolling]);
+  }, [token, page]);
 
   useEffect(() => {
     if (!isWebhookSet) {
@@ -134,7 +134,7 @@ const LeadPage = () => {
   const handleScroll = () => {
     const { scrollTop, clientHeight, scrollHeight } = tableRef.current;
   
-    if (!isScrolling && scrollTop + clientHeight >= scrollHeight) {
+    if (scrollTop + clientHeight >= scrollHeight) {
 
       if (page < totalPages) {
         setPage((prevPage) => prevPage + 1);
