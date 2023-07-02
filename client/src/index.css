@@ -188,6 +188,9 @@ tbody tr:hover {
 
 .leadsTable {
   height: 250px;
+}
+
+.leadsTable.showScrollbar {
   overflow-y: scroll;
 }
 

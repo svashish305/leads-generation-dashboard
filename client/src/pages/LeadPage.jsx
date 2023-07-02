@@ -5,12 +5,14 @@ import axios from 'axios';
 const LeadPage = () => {
   const { userId } = useParams();
   const navigate = useNavigate();
+  const [webhookUrl, setWebhookUrl] = useState('');
+  const [isWebhookSet, setIsWebhookSet] = useState(false);
   const [leads, setLeads] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
-  const [webhookUrl, setWebhookUrl] = useState('');
-  const [isWebhookSet, setIsWebhookSet] = useState(false);
+  const [showScrollbar, setShowScrollbar] = useState(false);
+  
   const tableRef = useRef(null);
 
   const logOut = () => {
@@ -68,8 +70,9 @@ const LeadPage = () => {
               },
             }
           );
-          const { success, leads = [], totalPages = 0 } = data;
+          const { success, leads = [], totalPages = 0, totalCount = 0, pageSize } = data;
           if (success) {
+            setShowScrollbar(totalCount > pageSize);
             if (page === 1) {
               setLeads(leads);
             } else {
@@ -85,7 +88,7 @@ const LeadPage = () => {
       }
     };
     fetchLeads();
-  }, [token, page]);
+  }, [token, page, isScrolling]);
 
   useEffect(() => {
     if (!isWebhookSet) {
@@ -94,9 +97,9 @@ const LeadPage = () => {
     const eventSource = new EventSource(`${import.meta.env.VITE_API_URL}/api/v1/sse`);
 
     eventSource.onmessage = (event) => {
-      const leadData = JSON.parse(event.data);
-      if (leadData.userId === parseInt(userId, 10)) {
-        setLeads((prevLeads) => [...prevLeads, leadData]);
+      const { type = null, data = null } = JSON.parse(event.data);
+      if (type === 'lead' && data?.userId === parseInt(userId, 10)) {
+        setLeads((prevLeads) => [...prevLeads, data]);
       }
     };
 
@@ -131,7 +134,8 @@ const LeadPage = () => {
   const handleScroll = () => {
     const { scrollTop, clientHeight, scrollHeight } = tableRef.current;
   
-    if (scrollTop + clientHeight >= scrollHeight) {
+    if (!isScrolling && scrollTop + clientHeight >= scrollHeight) {
+
       if (page < totalPages) {
         setPage((prevPage) => prevPage + 1);
       }
@@ -151,7 +155,7 @@ const LeadPage = () => {
       </div>
       {isLoading && <div className='loading'>Loading...</div>}
       {leads.length > 0 && 
-        <div className='leadsTable' onScroll={handleScroll}>
+        <div className={`leadsTable ${showScrollbar ? 'showScrollbar' : ''}`} onScroll={handleScroll}>
           <table>
             <thead>
               <tr>

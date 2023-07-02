@@ -1,4 +1,4 @@
-import { clients } from "../utils/sse.js";
+import { eventEmitter } from "../utils/eventEmitter.js";
 
 export const sendServerEvents = (req, res) => {
   res.setHeader("Content-Type", "text/event-stream");
@@ -6,13 +6,11 @@ export const sendServerEvents = (req, res) => {
   res.setHeader("Connection", "keep-alive");
 
   res.write(": connection established\n\n");
+  const sendEvent = (data) => res.write(`data: ${JSON.stringify(data)}\n\n`);
 
-  clients.push(res);
+  eventEmitter.on("event", sendEvent);
 
   req.on("close", () => {
-    const index = clients.indexOf(res);
-    if (index !== -1) {
-      clients.splice(index, 1);
-    }
+    eventEmitter.off("event", sendEvent);
   });
 };

@@ -1,5 +1,5 @@
 import { createLead } from "./lead.js";
-import { sendEventToClients } from "../utils/sse.js";
+import { eventEmitter } from "../utils/eventEmitter.js";
 
 export const process = async (body) => {
   try {
@@ -16,8 +16,11 @@ export const process = async (body) => {
       return { success: false, message: error.message };
     }
 
-    const leadData = JSON.stringify(lead);
-    sendEventToClients(leadData);
+    const eventData = {
+      type: "lead",
+      data: lead,
+    };
+    eventEmitter.emit("event", eventData);
 
     return { success: true, message: "Webhook Processed" };
   } catch (error) {
