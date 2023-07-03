@@ -8,6 +8,9 @@ Frontend is deployed on Render [here](https://leads-generation-frontend.onrender
 
 ## Curl command to submit lead to webhook endpoint
 
+First step is to signup a new account, then it takes to the loggedin user's lead dashboard, where you can confirm the webhook url.
+Once that's done, a realtime table row will show on a new lead event.
+If webhook url isn't confirmed, then the new leads will be shown in the dashboard upon every reload.
 We can use the following curl command to submit a lead to the webhook endpoint.
 
 {webhook-url}: Replace this with the actual URL of the webhook endpoint. For example, it would be http://localhost:3000/api/v1/webhook/1 or https://lead-generation.onrender.com/api/v1/webhook/1 where 1 is the user ID.
@@ -46,7 +49,7 @@ curl --location --request POST 'https://lead-generation.onrender.com/api/v1/webh
 }'
 ```
 
-## Running the app locally
+## Running the app locally (without docker)
 
 To run the Leads Generation Dashboard locally, follow these steps:
 Clone the project repository:
@@ -91,6 +94,28 @@ cd client && npm run test
 ```
 
 These commands will execute the respective test suites for the server and client applications.
-First step is to signup a new account, then it takes to the loggedin user's lead dashboard, where you can confirm the webhook url.
-Once that's done, a realtime table row will show on a new lead event.
-If webhook url isn't confirmed, then the new leads will be shown in the dashboard upon every reload.
+
+## Running the app locally (with docker)
+
+To run the Leads Generation Dashboard locally using docker, follow these steps:
+
+Clone the project repository:
+
+```bash
+git clone https://github.com/svashish305/leads-generation-dashboard
+```
+
+Build the docker images for both the client and server:
+
+```bash
+cd client && docker build -t leads-generation-dashboard-client .
+cd ../server && docker build -t leads-generation-dashboard-server .
+```
+
+Start the docker containers:
+
+```bash
+docker-compose up
+```
+
+Access the application in your browser by visiting http://localhost:5173.

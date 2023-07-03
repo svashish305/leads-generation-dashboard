@@ -1,0 +1,23 @@
+version: '3'
+services:
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    env_file:
+      - ./client/.env
+    ports:
+      - 5173:5173
+    depends_on:
+      - server
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    env_file:
+      - ./server/.env
+    ports:
+      - 3000:3000
+    environment:
+      - MONGO_URI=mongodb+srv://svashish305:JsTfRjVT4hbBcOJi@cluster0.ebklaaw.mongodb.net/?retryWrites=true&w=majority
+
