@@ -1,20 +1,39 @@
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import App from '../App';
 import LoginPage from '../pages/LoginPage/LoginPage';
 import SignupPage from '../pages/SignupPage/SignupPage';
 import LeadPage from '../pages/LeadPage/LeadPage';
-
-vi.mock('axios');
 
 describe('App', () => {
   it('Check if the App render well', () => {
     render(<App />);
   });
 
-  it('Check if all Auth Pages render well', () => {
+  it('Check if Signup Page renders well', () => {
+    render(
+      <MemoryRouter initialEntries={['/signup']}>
+        <Routes>
+          <Route path="/" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
+          <Route path="/leads/:userId" element={<LeadPage />} />
+        </Routes>
+      </MemoryRouter>
+    );
+    const signupHeading = screen.getByText('Signup Account');
+    expect(signupHeading).toBeInTheDocument();
+    const emailInputSignup = screen.getByLabelText('Email');
+    const passwordInputSignup = screen.getByLabelText('Password');
+    const signupButton = screen.getByRole('button');
+    const linkToLoginButton = screen.getByText('Login');
+    expect(emailInputSignup).toBeInTheDocument();
+    expect(passwordInputSignup).toBeInTheDocument();
+    expect(signupButton).toBeInTheDocument();
+    expect(linkToLoginButton).toBeInTheDocument();
+  });
+
+  it('Check if Login Page renders well', () => {
     render(
       <MemoryRouter>
         <Routes>
@@ -24,21 +43,16 @@ describe('App', () => {
         </Routes>
       </MemoryRouter>
     );
-
+    const loginHeading = screen.getByText('Login Account');
+    expect(loginHeading).toBeInTheDocument();
     const emailInputSignup = screen.getByLabelText('Email');
     const passwordInputSignup = screen.getByLabelText('Password');
-    const loginButton = screen.getByText('Login');
+    const loginButton = screen.getByRole('button');
     const linkToSignupButton = screen.getByText('Signup');
+    expect(emailInputSignup).toBeInTheDocument();
+    expect(passwordInputSignup).toBeInTheDocument();
     expect(loginButton).toBeInTheDocument();
     expect(linkToSignupButton).toBeInTheDocument();
-    expect(emailInputSignup).toBeInTheDocument();
-    expect(passwordInputSignup).toBeInTheDocument();
-
-    userEvent.click(linkToSignupButton);
-    const signupButton = screen.getByRole('button');
-    expect(emailInputSignup).toBeInTheDocument();
-    expect(passwordInputSignup).toBeInTheDocument();
-    expect(signupButton).toBeInTheDocument();
   });
 
   it('Check if Lead Page renders well', () => {
@@ -51,8 +65,9 @@ describe('App', () => {
         </Routes>
       </MemoryRouter>
     );
-
+    const logoutButton = screen.getByText('Log Out');
     const webhookUrlHeading = screen.getByText('Your Webhook URL');
+    expect(logoutButton).toBeInTheDocument();
     expect(webhookUrlHeading).toBeInTheDocument();
   });
 });
