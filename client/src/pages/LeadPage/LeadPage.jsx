@@ -8,6 +8,7 @@ const LeadPage = () => {
   const { userId } = useParams();
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState('');
+  const [isWebhookUrlInputClicked, setIsWebhookUrlInputClicked] = useState(false);
   const [webhookUrl, setWebhookUrl] = useState('');
   const [isWebhookSet, setIsWebhookSet] = useState(false);
   const [leads, setLeads] = useState([]);
@@ -17,6 +18,7 @@ const LeadPage = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [showScrollbar, setShowScrollbar] = useState(false);
   
+  const inputRef = useRef(null);
   const tableRef = useRef(null);
 
   const logOut = () => {
@@ -26,6 +28,18 @@ const LeadPage = () => {
   };
 
   const token = localStorage.getItem('token');
+
+  const handleCopy = () => {
+    setIsWebhookUrlInputClicked(true);
+    inputRef.current.select();
+    inputRef.current.setSelectionRange(0, inputRef.current.value.length);
+    document.execCommand('copy');
+    window.getSelection().removeAllRanges();
+
+    setTimeout(() => {
+      setIsWebhookUrlInputClicked(false);
+    }, 1000);
+  };
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -165,7 +179,17 @@ const LeadPage = () => {
         <button className='logoutButton' onClick={logOut}>Log Out</button>
         <h3>Your Webhook URL</h3>
         <div className='webhookUrlContainer'>
-          <input type='text' value={webhookUrl} disabled />
+          <input 
+            type='text' 
+            value={webhookUrl} 
+            // disabled 
+            ref={inputRef} 
+            onClick={handleCopy}
+            data-tooltip-id='webhookUrlInput'
+            data-tooltip-place='bottom' 
+            data-tooltip-content={isWebhookUrlInputClicked ? 'Copied!' : 'Click to copy'} 
+          />
+          <Tooltip id='webhookUrlInput' />
           {!isWebhookSet && (
             <>
               <button 
