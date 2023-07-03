@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import { Tooltip } from 'react-tooltip';
 import axios from 'axios';
 import './LeadPage.css';
@@ -160,57 +160,65 @@ const LeadPage = () => {
   };
 	
 	return (
-		<div className='leadPageContainer'>
-      <button className='logoutButton' onClick={logOut}>Log Out</button>
-      <h3>Your Webhook URL</h3>
-      <div className='webhookUrlContainer'>
-        <input type='text' value={webhookUrl} disabled />
-        {(
-          <>
-            <button 
-              className='secondaryButton' 
-              onClick={updateWebhookUrl}
-              data-tooltip-id='confirmWebhookBtn'
-              data-tooltip-place='top' 
-              data-tooltip-content='Click to confirm subscription for new leads!' 
-            >
-              Confirm
-            </button>
-            <Tooltip id='confirmWebhookBtn' />
-          </>
-        )}
-      </div>
-      {isLoading && <div className='loading'>Loading...</div>}
-      {errorMessage && <div className="error">{errorMessage}</div>}
-      {leads.length > 0 && 
-        <div className={`leadsTable ${showScrollbar ? 'showScrollbar' : ''}`} onScroll={handleScroll}>
-          <table>
-            <thead>
-              <tr className='capitalizeFirstLetter'>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Phone</th>
-                {otherLeadFields.length > 0 && otherLeadFields.map((key) => (
-                  key && <th key={key}>{key}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody ref={tableRef}>
-              {leads.map((lead) => (
-                <tr key={lead._id}>
-                  <td>{lead.name}</td>
-                  <td>{lead.email}</td>
-                  <td>{lead.phone}</td>
+    <>
+      <div className='leadPageContainer'>
+        <button className='logoutButton' onClick={logOut}>Log Out</button>
+        <h3>Your Webhook URL</h3>
+        <div className='webhookUrlContainer'>
+          <input type='text' value={webhookUrl} disabled />
+          {!isWebhookSet && (
+            <>
+              <button 
+                className='secondaryButton' 
+                onClick={updateWebhookUrl}
+                data-tooltip-id='confirmWebhookBtn'
+                data-tooltip-place='top' 
+                data-tooltip-content='Click to confirm subscription for new leads!' 
+              >
+                Confirm
+              </button>
+              <Tooltip id='confirmWebhookBtn' />
+            </>
+          )}
+        </div>
+        {isLoading && <div className='loading'>Loading...</div>}
+        {errorMessage && <div className="error">{errorMessage}</div>}
+        {leads.length > 0 && 
+          <div className={`leadsTable ${showScrollbar ? 'showScrollbar' : ''}`} onScroll={handleScroll}>
+            <table>
+              <thead>
+                <tr className='capitalizeFirstLetter'>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Phone</th>
                   {otherLeadFields.length > 0 && otherLeadFields.map((key) => (
-                    lead.otherFields?.[key] ? <td key={key}>{lead.otherFields[key]}</td> : <td key={key}></td>
+                    key && <th key={key}>{key}</th>
                   ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      }
-    </div>
+              </thead>
+              <tbody ref={tableRef}>
+                {leads.map((lead) => (
+                  <tr key={lead._id}>
+                    <td>{lead.name}</td>
+                    <td>{lead.email}</td>
+                    <td>{lead.phone}</td>
+                    {otherLeadFields.length > 0 && otherLeadFields.map((key) => (
+                      lead.otherFields?.[key] ? <td key={key}>{lead.otherFields[key]}</td> : <td key={key}></td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        }
+      </div>
+      <div className='imageAttribution'>
+        Image by{' '}
+        <Link to='https://www.freepik.com/free-vector/abstract-realistic-technology-particle-background_6881076.htm#query=technology%20abstract%20purple%20background&position=10&from_view=search&track=ais'>
+          Freepik
+        </Link>
+      </div>
+    </>
 	)
 }
 

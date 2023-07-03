@@ -56,38 +56,46 @@ const SignupPage = () => {
   };
 
 	return (
-		<div className='formContainer'>
-      <h2>Signup Account</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor='email'>Email</label>
-          <input
-            type='email'
-            id='email'
-            name='email'
-            value={email}
-            placeholder='Enter your email'
-            onChange={handleOnChange}
-          />
-        </div>
-        <div>
-          <label htmlFor='password'>Password</label>
-          <input
-            type='password'
-            id='password'
-            name='password'
-            value={password}
-            placeholder='Enter your password'
-            onChange={handleOnChange}
-          />
-        </div>
-        {errorMessage && <div className='error'>{errorMessage}</div>}
-        <button type='submit'>Signup</button>
-        <span>
-          Already have an account? <Link to={'/'}>Login</Link>
-        </span>
-      </form>
-    </div>
+    <>
+      <div className='formContainer'>
+        <h2>Signup Account</h2>
+        <form onSubmit={handleSubmit}>
+          <div>
+            <label htmlFor='email'>Email</label>
+            <input
+              type='email'
+              id='email'
+              name='email'
+              value={email}
+              placeholder='Enter your email'
+              onChange={handleOnChange}
+            />
+          </div>
+          <div>
+            <label htmlFor='password'>Password</label>
+            <input
+              type='password'
+              id='password'
+              name='password'
+              value={password}
+              placeholder='Enter your password'
+              onChange={handleOnChange}
+            />
+          </div>
+          {errorMessage && <div className='error'>{errorMessage}</div>}
+          <button type='submit'>Signup</button>
+          <span>
+            Already have an account? <Link to={'/'}>Login</Link>
+          </span>
+        </form>
+      </div>
+      <div className='imageAttribution'>
+        Image by{' '}
+        <Link to='https://www.freepik.com/free-vector/abstract-realistic-technology-particle-background_6881076.htm#query=technology%20abstract%20purple%20background&position=10&from_view=search&track=ais'>
+          Freepik
+        </Link>
+      </div>
+    </>
 	)
 }
 
