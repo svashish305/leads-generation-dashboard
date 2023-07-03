@@ -21,7 +21,7 @@ const leadSchema = new mongoose.Schema(
       required: true,
     },
     otherFields: {
-      type: mongoose.Schema.Types.Mixed,
+      type: Object,
     },
   },
   {

@@ -10,6 +10,7 @@ const LeadPage = () => {
   const [webhookUrl, setWebhookUrl] = useState('');
   const [isWebhookSet, setIsWebhookSet] = useState(false);
   const [leads, setLeads] = useState([]);
+  const [otherLeadFields, setOtherLeadFields] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
@@ -125,6 +126,9 @@ const LeadPage = () => {
             } else {
               setLeads((prevLeads) => [...prevLeads, ...leads]);
             }
+            setOtherLeadFields(Array.from(
+              new Set(leads.flatMap((lead) => lead.otherFields ? Object.keys(lead.otherFields) : []))
+            ));
             setTotalPages(totalPages);
           } else {
             setErrorMessage(message);
@@ -167,10 +171,13 @@ const LeadPage = () => {
         <div className={`leadsTable ${showScrollbar ? 'showScrollbar' : ''}`} onScroll={handleScroll}>
           <table>
             <thead>
-              <tr>
+              <tr className='capitalizeFirstLetter'>
                 <th>Name</th>
                 <th>Email</th>
                 <th>Phone</th>
+                {otherLeadFields.length > 0 && otherLeadFields.map((key) => (
+                  key && <th key={key}>{key}</th>
+                ))}
               </tr>
             </thead>
             <tbody ref={tableRef}>
@@ -179,6 +186,9 @@ const LeadPage = () => {
                   <td>{lead.name}</td>
                   <td>{lead.email}</td>
                   <td>{lead.phone}</td>
+                  {otherLeadFields.length > 0 && otherLeadFields.map((key) => (
+                    lead.otherFields?.[key] && <td key={key}>{lead.otherFields[key]}</td>
+                  ))}
                 </tr>
               ))}
             </tbody>
