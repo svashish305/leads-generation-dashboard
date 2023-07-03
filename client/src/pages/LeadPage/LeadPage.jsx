@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { Tooltip } from 'react-tooltip';
 import axios from 'axios';
 import './LeadPage.css';
 
@@ -164,10 +165,20 @@ const LeadPage = () => {
       <h3>Your Webhook URL</h3>
       <div className='webhookUrlContainer'>
         <input type='text' value={webhookUrl} disabled />
-        {!isWebhookSet && (
-          <button className='secondaryButton' onClick={updateWebhookUrl}>
-          Confirm
-        </button>)}
+        {(
+          <>
+            <button 
+              className='secondaryButton' 
+              onClick={updateWebhookUrl}
+              data-tooltip-id='confirmWebhookBtn'
+              data-tooltip-place='top' 
+              data-tooltip-content='Click to confirm subscription for new leads!' 
+            >
+              Confirm
+            </button>
+            <Tooltip id='confirmWebhookBtn' />
+          </>
+        )}
       </div>
       {isLoading && <div className='loading'>Loading...</div>}
       {errorMessage && <div className="error">{errorMessage}</div>}
@@ -191,7 +202,7 @@ const LeadPage = () => {
                   <td>{lead.email}</td>
                   <td>{lead.phone}</td>
                   {otherLeadFields.length > 0 && otherLeadFields.map((key) => (
-                    lead.otherFields?.[key] && <td key={key}>{lead.otherFields[key]}</td>
+                    lead.otherFields?.[key] ? <td key={key}>{lead.otherFields[key]}</td> : <td key={key}></td>
                   ))}
                 </tr>
               ))}
