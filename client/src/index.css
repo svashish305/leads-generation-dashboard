@@ -21,7 +21,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: url('./assets/bgImage.jpg') no-repeat center center fixed;
+  background: url('https://img.freepik.com/free-vector/abstract-realistic-technology-particle-background_23-2148429738.jpg?w=1380&t=st=1688396361~exp=1688396961~hmac=dfe2a14d143d0360ae7d10b3f3d8bd7810d5da10695784bb5dbd969b2f609b7c') no-repeat center center fixed;
   background-size: cover;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   color: white;
