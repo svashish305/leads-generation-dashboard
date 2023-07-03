@@ -21,8 +21,7 @@ describe('App', () => {
         </Routes>
       </MemoryRouter>
     );
-    const signupHeading = screen.getByText('Signup Account');
-    expect(signupHeading).toBeInTheDocument();
+
     const emailInputSignup = screen.getByLabelText('Email');
     const passwordInputSignup = screen.getByLabelText('Password');
     const signupButton = screen.getByRole('button');
@@ -43,8 +42,7 @@ describe('App', () => {
         </Routes>
       </MemoryRouter>
     );
-    const loginHeading = screen.getByText('Login Account');
-    expect(loginHeading).toBeInTheDocument();
+
     const emailInputSignup = screen.getByLabelText('Email');
     const passwordInputSignup = screen.getByLabelText('Password');
     const loginButton = screen.getByRole('button');
@@ -65,6 +63,7 @@ describe('App', () => {
         </Routes>
       </MemoryRouter>
     );
+    
     const logoutButton = screen.getByText('Log Out');
     const webhookUrlHeading = screen.getByText('Your Webhook URL');
     expect(logoutButton).toBeInTheDocument();

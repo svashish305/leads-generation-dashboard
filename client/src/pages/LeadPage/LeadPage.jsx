@@ -169,7 +169,7 @@ const LeadPage = () => {
           {!isWebhookSet && (
             <>
               <button 
-                className='secondaryButton' 
+                className='confirmButton' 
                 onClick={updateWebhookUrl}
                 data-tooltip-id='confirmWebhookBtn'
                 data-tooltip-place='top' 

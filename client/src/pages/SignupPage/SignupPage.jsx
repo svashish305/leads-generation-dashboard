@@ -58,7 +58,6 @@ const SignupPage = () => {
 	return (
     <>
       <div className='formContainer'>
-        <h2>Signup Account</h2>
         <form onSubmit={handleSubmit}>
           <div>
             <label htmlFor='email'>Email</label>
