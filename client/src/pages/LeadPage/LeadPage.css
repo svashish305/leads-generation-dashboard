@@ -72,6 +72,7 @@ tbody tr:hover {
 
 .leadsTable {
   height: 255px;
+  max-width: 100%;
   background-color: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
 }
@@ -83,6 +84,7 @@ tbody tr:hover {
 /* Webkit-based browsers */
 .leadsTable::-webkit-scrollbar {
   width: 6px;
+  height: 6px;
   background-color: #333333;
 }
 
@@ -96,7 +98,7 @@ tbody tr:hover {
 }
 
 .leadsTable::-webkit-scrollbar-thumb:active {
-  background-color: #333333;
+  background-color: lightgray;
 }
 
 /* Firefox */
@@ -107,6 +109,7 @@ tbody tr:hover {
 
 .leadsTable::-moz-scrollbar {
   width: 6px;
+  height: 6px;
   background-color: #333333;
 }
 
