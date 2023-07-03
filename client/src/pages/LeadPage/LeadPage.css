@@ -68,6 +68,8 @@ tbody tr:hover {
 
 .leadsTable {
   height: 250px;
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
 }
 
 .leadsTable.showScrollbar {
@@ -81,16 +83,16 @@ tbody tr:hover {
 }
 
 .leadsTable::-webkit-scrollbar-thumb {
-  background-color: #999999;
+  background-color: #777777;
   border-radius: 3px;
 }
 
 .leadsTable::-webkit-scrollbar-thumb:hover {
-  background-color: #777777;
+  background-color: #555555;
 }
 
 .leadsTable::-webkit-scrollbar-thumb:active {
-  background-color: #555555;
+  background-color: #333333;
 }
 
 /* Firefox */
@@ -105,14 +107,14 @@ tbody tr:hover {
 }
 
 .leadsTable::-moz-scrollbar-thumb {
-  background-color: #999999;
+  background-color: #777777;
   border-radius: 3px;
 }
 
 .leadsTable::-moz-scrollbar-thumb:hover {
-  background-color: #777777;
+  background-color: #555555;
 }
 
 .leadsTable::-moz-scrollbar-thumb:active {
-  background-color: #555555;
+  background-color: #333333;
 }
