@@ -182,9 +182,9 @@ const LeadPage = () => {
           <input 
             type='text' 
             value={webhookUrl} 
-            // disabled 
             ref={inputRef} 
             onClick={handleCopy}
+            onBlur={() => setIsWebhookUrlInputClicked(false)}
             data-tooltip-id='webhookUrlInput'
             data-tooltip-place='bottom' 
             data-tooltip-content={isWebhookUrlInputClicked ? 'Copied!' : 'Click to copy'} 
