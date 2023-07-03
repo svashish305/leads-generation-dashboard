@@ -126,6 +126,10 @@ const LeadPage = () => {
             } else {
               setLeads((prevLeads) => [...prevLeads, ...leads]);
             }
+            /* 
+              EDGE CASE: below code for setOtherLeadFields assumes that otherFields is a flat object, it won't work for nested object, 
+              in that case, we need to use a recursive function 
+            */
             setOtherLeadFields(Array.from(
               new Set(leads.flatMap((lead) => lead.otherFields ? Object.keys(lead.otherFields) : []))
             ));
