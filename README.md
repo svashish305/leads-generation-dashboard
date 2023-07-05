@@ -10,7 +10,7 @@ Frontend is deployed on Render [here](https://leads-generation-frontend.onrender
 
 First step is to signup a new account, then it takes to the loggedin user's lead dashboard, where you can confirm the webhook url.
 Once that's done, a realtime table row will show on a new lead event.
-If webhook url isn't confirmed, then the new leads will be shown in the dashboard upon every reload.
+If webhook url isn't confirmed, then the new leads won't show.
 We can use the following curl command to submit a lead to the webhook endpoint.
 
 {webhook-url}: Replace this with the actual URL of the webhook endpoint. For example, it would be http://localhost:3000/api/v1/webhook/1 or https://lead-generation.onrender.com/api/v1/webhook/1 where 1 is the user ID.
