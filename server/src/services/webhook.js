@@ -1,3 +1,4 @@
+import { getUserWebhookUrl } from './user.js';
 import { createLead } from "./lead.js";
 import { eventEmitter } from "../utils/eventEmitter.js";
 
@@ -5,6 +6,11 @@ export const process = async (body) => {
   try {
     console.log("webhook payload ", body);
     const { userId, email, name, phone, otherFields } = body;
+    const { webhookUrl = null } = await getUserWebhookUrl(userId);
+    if (!webhookUrl) {
+      return { success: false, message: "Invalid Webhook" };
+    }
+
     const { lead, error } = await createLead({
       userId,
       email,
