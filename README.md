@@ -47,19 +47,6 @@ curl --location --request POST 'https://lead-generation.onrender.com/api/v1/webh
     "income": "A lot"
   }
 }'
-
-curl --location --request POST 'http://localhost:3000/api/v1/webhook/7' \
---header 'Content-Type: application/json' \
---header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjcsImlhdCI6MTY4ODU2NjMwMSwiZXhwIjoxNjg4ODI1NTAxfQ.fMcaCVTd3CNuV_N5o6cpBSfb9DAmLe-nyhKuBwVVpZc' \
---data-raw '{
-  "name": "Tony Stark",
-  "email": "tony@avengers.com",
-  "phone": "+16262223333",
-  "otherFields": {
-    "address": "Avengers Headquarters",
-    "income": "A lot"
-  }
-}'
 ```
 
 ## Running the app locally (without docker)
