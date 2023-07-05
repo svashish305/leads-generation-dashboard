@@ -2,11 +2,11 @@ import User from "../models/user.js";
 
 export const getUserWebhookUrl = async (userId) => {
   try {
-    const user = await User.findOne({ userId }).select("webhookUrl");
-    if (!user) {
+    const { webhookUrl = null } = await User.findOne({ userId }).select("webhookUrl");
+    if (!webhookUrl) {
       return { error: { code: 404, message: "User not found" } };
     }
-    return { webhookUrl: user.webhookUrl };
+    return { webhookUrl };
   } catch (error) {
     console.error("Could not get user's webhook url due to : ", error);
     return { error: { code: 500, message: error.message } };
