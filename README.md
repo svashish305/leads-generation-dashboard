@@ -108,14 +108,14 @@ git clone https://github.com/svashish305/leads-generation-dashboard
 Build the docker images for both the client and server:
 
 ```bash
-cd client && docker build -t leads-generation-dashboard-client .
-cd ../server && docker build -t leads-generation-dashboard-server .
+cd client && sudo docker build -t leads-generation-dashboard-client .
+cd ../server && sudo docker build -t leads-generation-dashboard-server .
 ```
 
 Start the docker containers:
 
 ```bash
-docker-compose up
+sudo docker compose up
 ```
 
 Access the application in your browser by visiting http://localhost:5173.
