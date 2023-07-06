@@ -43,7 +43,6 @@ export const getLeadsController = async (req, res) => {
     const {
       leads = [],
       totalPages = 0,
-      totalCount = 0,
       error = null,
     } = await getLeadsForUser(userId, page, pageSize, sortBy, sortOrder);
     if (error) {
@@ -52,7 +51,7 @@ export const getLeadsController = async (req, res) => {
     }
     return res
       .status(200)
-      .json({ success: true, leads, totalPages, totalCount, pageSize });
+      .json({ success: true, leads, totalPages });
   } catch (error) {
     console.error("Unable to get leads for user due to : ", error);
     return res

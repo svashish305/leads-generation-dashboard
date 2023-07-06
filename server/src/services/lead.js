@@ -43,7 +43,7 @@ export const getLeadsForUser = async (
     const { paginatedData = [], totalCountData = [] } = result;
     const totalCount = totalCountData?.[0]?.count || 0;
     const totalPages = Math.ceil(totalCount / pageSize);
-    return { leads: paginatedData, pageSize, totalPages, totalCount };
+    return { leads: paginatedData, pageSize, totalPages };
   } catch (error) {
     console.error("Could not get leads due to : ", error);
     return { error: { code: 500, message: error.message } };

@@ -16,7 +16,6 @@ const LeadPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
-  const [showScrollbar, setShowScrollbar] = useState(false);
   
   const inputRef = useRef(null);
   const tableRef = useRef(null);
@@ -112,6 +111,7 @@ const LeadPage = () => {
       const { type = null, data = null } = JSON.parse(event.data);
       if (type === 'lead' && data?.userId === parseInt(userId, 10)) {
         setLeads((prevLeads) => [...prevLeads, data]);
+        setOtherLeadFields(data.otherFields ? Object.keys(data.otherFields) : [])
       }
     };
 
@@ -133,9 +133,8 @@ const LeadPage = () => {
               },
             }
           );
-          const { success, message, leads = [], totalPages = 0, totalCount = 0, pageSize } = data;
+          const { success, message, leads = [], totalPages = 0 } = data;
           if (success) {
-            setShowScrollbar(totalCount > pageSize);
             if (page === 1) {
               setLeads(leads);
             } else {
@@ -180,7 +179,8 @@ const LeadPage = () => {
         <h3>Your Webhook URL</h3>
         <div className='webhookUrlContainer'>
           <input 
-            type='text' 
+            type='text'
+            readOnly 
             value={webhookUrl} 
             ref={inputRef} 
             onClick={handleCopy}
@@ -208,7 +208,7 @@ const LeadPage = () => {
         {isLoading && <div className='loading'>Loading...</div>}
         {errorMessage && <div className="error">{errorMessage}</div>}
         {leads.length > 0 && 
-          <div className={`leadsTable ${showScrollbar ? 'showScrollbar' : ''}`} onScroll={handleScroll}>
+          <div className='leadsTable' onScroll={handleScroll}>
             <table>
               <thead>
                 <tr className='capitalizeFirstLetter'>
