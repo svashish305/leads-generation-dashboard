@@ -3,6 +3,6 @@ import { sendServerEvents } from "../controllers/sse.js";
 
 const router = express.Router();
 
-router.get("/", sendServerEvents);
+router.get("/:userId", sendServerEvents);
 
 export default router;

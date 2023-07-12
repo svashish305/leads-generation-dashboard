@@ -105,7 +105,7 @@ const LeadPage = () => {
     if (!isWebhookSet) {
       return;
     }
-    let eventSource = new EventSource(`${import.meta.env.VITE_API_URL}/api/v1/sse`);
+    let eventSource = new EventSource(`${import.meta.env.VITE_API_URL}/api/v1/sse/${userId}`);
 
     eventSource.onmessage = (event) => {
       const { type = null, data = null } = JSON.parse(event.data);
