@@ -16,6 +16,6 @@ router.use("/auth", authRoutes);
 router.use("/user", validateUser, userRoutes);
 router.use("/lead", validateUser, leadRoutes);
 router.use("/webhook", validateUser, validateLead, webhookRoutes);
-router.use("/sse", validateUser, sseRoutes);
+router.use("/sse", sseRoutes);
 
 export default router;
